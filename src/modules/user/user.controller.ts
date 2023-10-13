@@ -6,18 +6,22 @@ import { Roles } from 'src/core/decorators/role.decorator';
 import { Role } from 'src/core/enums/role.enum';
 import { RolesGuard } from 'src/core/guards/role.guard';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(RolesGuard)
-  @Roles(Role.Root)
   @Post()
+  @Roles(Role.Root)
   async create(@Body() user: CreateUserDTO) {
-    return this.userService.create(user);
+    const newUser = await this.userService.create(user);
+    return {
+      id: newUser.id,
+      email: newUser.email,
+      name: newUser.name,
+      role: newUser.role,
+    };
   }
-
   @Get()
   list() {
     return this.userService.listAll();

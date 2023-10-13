@@ -10,11 +10,18 @@ import { PrismaService } from './app/config/prisma.service';
 import { LoggerMiddleware } from './core/middlewares/logger.middleware';
 import { CloudinaryService } from './app/config/cloudinary.service';
 import { AuthController } from './modules/auth/auth.controller';
+import { AuthService } from './modules/auth/auth.service';
 
 @Module({
   imports: [UserModule, ProjectsModule, AuthModule],
   controllers: [UserController, ProjectsController, AuthController],
-  providers: [UserService, ProjectService, PrismaService, CloudinaryService],
+  providers: [
+    UserService,
+    ProjectService,
+    PrismaService,
+    CloudinaryService,
+    AuthService,
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
